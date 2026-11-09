@@ -1,0 +1,9 @@
+<section class="card cliente-card" [formGroup]="formulario">
+  <div class="section-title"><span class="number">01</span><div><h2>Datos del cliente</h2><p>Información para entregar el pedido</p></div></div>
+  <div class="customer-grid">
+    <label>Nombre completo<input formControlName="nombre_cliente" placeholder="Ej. María Juárez"></label>
+    <label>Dirección<input formControlName="direccion" placeholder="Calle, número y colonia"></label>
+    <label>Teléfono<input formControlName="telefono" type="tel" placeholder="555 123 4567"></label>
+    <label>Fecha del pedido<input formControlName="fecha_pedido" type="date"></label>
+  </div>
+</section>

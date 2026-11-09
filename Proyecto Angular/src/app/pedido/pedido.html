@@ -1,0 +1,26 @@
+<section class="card pizza-card">
+  <div class="section-title"><span class="number">02</span><div><h2>Arma tus pizzas</h2><p>Elige tamaño, ingredientes y cantidad</p></div><button class="button secondary add-button" type="button" (click)="agregarPizza()">＋ Agregar pizza</button></div>
+  <div class="pizza-list">
+    @for (pizza of pizzas.controls; track $index; let i = $index) {
+      <div class="pizza-row" [formGroup]="$any(pizza)">
+        <div class="pizza-heading"><span class="pizza-icon">🍕</span><strong>Pizza {{ i + 1 }}</strong>@if (pizzas.length > 1) { <button class="remove" type="button" (click)="quitarPizza(i)">Quitar</button> }</div>
+        <div class="pizza-options">
+          <fieldset><legend>Tamaño</legend>
+            <label class="choice"><input type="radio" formControlName="tamano" value="Chica"><span>Chica</span><b>$40</b></label>
+            <label class="choice"><input type="radio" formControlName="tamano" value="Mediana"><span>Mediana</span><b>$80</b></label>
+            <label class="choice"><input type="radio" formControlName="tamano" value="Grande"><span>Grande</span><b>$120</b></label>
+          </fieldset>
+          <fieldset><legend>Ingredientes <small>+$10 c/u</small></legend>
+            <label class="check"><input type="checkbox" (change)="seleccionarIngrediente(i, 'Jamon', $any($event.target).checked)"> Jamón</label>
+            <label class="check"><input type="checkbox" (change)="seleccionarIngrediente(i, 'Piña', $any($event.target).checked)"> Piña</label>
+            <label class="check"><input type="checkbox" (change)="seleccionarIngrediente(i, 'Champiñones', $any($event.target).checked)"> Champiñones</label>
+          </fieldset>
+          <label class="quantity">Número de pizzas<input type="number" min="1" formControlName="num_pizzas"></label>
+        </div>
+        <div class="pizza-subtotal"><span>{{ ingredientesPizza(i) }}</span><strong>Subtotal: {{ precioPizza(i) | currency:'MXN':'symbol':'1.2-2' }}</strong></div>
+      </div>
+    }
+  </div>
+  <div class="order-total"><span>Total del pedido</span><strong>{{ totalPedido | currency:'MXN':'symbol':'1.2-2' }}</strong></div>
+  <button class="button primary finish" type="button" [disabled]="guardando" (click)="terminar.emit()">{{ guardando ? 'Guardando…' : 'Terminar y guardar pedido' }} <span>→</span></button>
+</section>

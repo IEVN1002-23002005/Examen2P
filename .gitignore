@@ -1,0 +1,7 @@
+Proyecto Angular/node_modules/
+Proyecto Angular/.angular/
+Proyecto Angular/dist/
+Proyecto Flask/__pycache__/
+Proyecto Flask/.venv/
+*.pyc
+*.sqlite3

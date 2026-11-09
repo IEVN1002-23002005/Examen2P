@@ -1,0 +1,96 @@
+<section class="card sales-card">
+  <div class="section-title">
+    <span class="number">03</span>
+    <div><h2>Consulta de ventas</h2><p>Consulta por día o por mes y revisa todos los pedidos</p></div>
+  </div>
+
+  <div class="sales-filters">
+    <div class="filter-box">
+      <label for="dia">Ventas del día</label>
+      <div class="filter-row">
+        <select id="dia" [(ngModel)]="diaConsulta">
+          @for (dia of dias; track dia) { <option [value]="dia">{{ dia | titlecase }}</option> }
+        </select>
+        <button class="button secondary" type="button" (click)="consultarVentas('dia')">Consultar</button>
+      </div>
+    </div>
+    <div class="filter-box">
+      <label for="mes">Ventas del mes</label>
+      <div class="filter-row">
+        <select id="mes" [(ngModel)]="mesConsulta">
+          @for (mes of meses; track mes) { <option [value]="mes">{{ mes | titlecase }}</option> }
+        </select>
+        <button class="button secondary" type="button" (click)="consultarVentas('mes')">Consultar</button>
+      </div>
+    </div>
+  </div>
+
+  @if (errorCarga) { <div class="alerta error">{{ errorCarga }}</div> }
+  @if (errorConsulta) { <div class="alerta error">{{ errorConsulta }}</div> }
+
+  @if (consultaRealizada) {
+    <div class="sales-result">
+      <div class="result-head">
+        <h3>{{ tipoConsulta === 'dia' ? 'Ventas del día: ' + (diaConsulta | titlecase) : 'Ventas del mes: ' + (mesConsulta | titlecase) }}</h3>
+        <strong>Total: {{ totalConsulta | currency:'MXN':'symbol':'1.2-2' }}</strong>
+      </div>
+      @if (ventasConsulta.length) {
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Pedido</th><th>Cliente</th><th>Fecha</th><th>Total</th><th>Detalle</th></tr></thead>
+            <tbody>
+              @for (venta of ventasConsulta; track venta.id_pedido) {
+                <tr>
+                  <td>#{{ venta.id_pedido }}</td>
+                  <td>{{ venta.nombre_cliente }}</td>
+                  <td>{{ venta.fecha_pedido }}</td>
+                  <td>{{ venta.total_pedido | currency:'MXN':'symbol':'1.2-2' }}</td>
+                  <td><button class="link-button" type="button" (click)="verDetalle(venta.id_pedido)">Ver detalle</button></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="empty">No hay ventas registradas para esta consulta.</p>
+      }
+    </div>
+  }
+
+  <div class="sales-result">
+    <div class="result-head"><h3>Resultados</h3><strong>Total: {{ totalGeneral | currency:'MXN':'symbol':'1.2-2' }}</strong></div>
+    @if (cargando && !pedidos.length) {
+      <p class="empty">Cargando pedidos…</p>
+    } @else if (pedidos.length) {
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Pedido</th><th>Cliente</th><th>Fecha</th><th>Total</th><th>Detalle</th></tr></thead>
+          <tbody>
+            @for (pedido of pedidos; track pedido.id_pedido) {
+              <tr>
+                <td>#{{ pedido.id_pedido }}</td>
+                <td>{{ pedido.nombre_cliente }}</td>
+                <td>{{ pedido.fecha_pedido }}</td>
+                <td>{{ pedido.total_pedido | currency:'MXN':'symbol':'1.2-2' }}</td>
+                <td><button class="link-button" type="button" (click)="verDetalle(pedido.id_pedido)">Ver detalle</button></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else if (!errorCarga) {
+      <p class="empty">No hay pedidos registrados para mostrar.</p>
+    }
+  </div>
+
+  @if (pedidoDetalle) {
+    <div class="detail-box">
+      <h3>Pedido #{{ pedidoDetalle.id_pedido }} · {{ pedidoDetalle.nombre_cliente }}</h3>
+      <p>{{ pedidoDetalle.direccion }} · {{ pedidoDetalle.telefono }} · {{ pedidoDetalle.fecha_pedido }}</p>
+      @for (detalle of pedidoDetalle.detalles; track detalle.id_detalle) {
+        <div class="detail-line"><span>{{ detalle.num_pizzas }} × {{ detalle.tamano }} — {{ detalle.ingredientes }}</span><strong>{{ detalle.subtotal | currency:'MXN':'symbol':'1.2-2' }}</strong></div>
+      }
+      <div class="detail-line detail-total"><span>Total del pedido</span><strong>{{ pedidoDetalle.total_pedido | currency:'MXN':'symbol':'1.2-2' }}</strong></div>
+    </div>
+  }
+</section>

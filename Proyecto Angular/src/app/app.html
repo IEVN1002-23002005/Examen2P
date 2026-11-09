@@ -1,0 +1,13 @@
+<header class="topbar">
+  <div class="brand-mark">P</div>
+  <div><span class="eyebrow">PIZZERÍA ARTESANAL</span><strong>Forno &amp; Basilico</strong></div>
+  <span class="status"><i></i> Sistema de pedidos</span>
+</header>
+<main class="page">
+  <section class="hero"><div><span class="eyebrow">PANEL DE ADMINISTRACIÓN</span><h1>Un buen pedido<br>empieza aquí.</h1><p>Registra pedidos y mantén tus ventas del día a la vista.</p></div><div class="hero-art" aria-hidden="true"><span>🍕</span></div></section>
+  @if (mensaje) { <div class="alerta" [class.error]="tipoMensaje === 'error'">{{ mensaje }}</div> }
+  <app-cliente [formulario]="pedidoForm"></app-cliente>
+  <app-pedido [pizzas]="pizzas" [guardando]="guardando" (terminar)="terminarPedido()"></app-pedido>
+  <app-ventas [actualizar]="actualizarPedidos"></app-ventas>
+  <footer>Forno &amp; Basilico <span>·</span> Administración de pedidos</footer>
+</main>
